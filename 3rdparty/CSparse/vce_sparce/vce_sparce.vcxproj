@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C9E365D0-2E21-4C73-BD30-4F0DB1E89033}</ProjectGuid>
+    <RootNamespace>vce_sparce</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>..\lib\$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\cs_add.c" />
+    <ClCompile Include="..\Source\cs_amd.c" />
+    <ClCompile Include="..\Source\cs_chol.c" />
+    <ClCompile Include="..\Source\cs_cholsol.c" />
+    <ClCompile Include="..\Source\cs_compress.c" />
+    <ClCompile Include="..\Source\cs_counts.c" />
+    <ClCompile Include="..\Source\cs_cumsum.c" />
+    <ClCompile Include="..\Source\cs_dfs.c" />
+    <ClCompile Include="..\Source\cs_dmperm.c" />
+    <ClCompile Include="..\Source\cs_droptol.c" />
+    <ClCompile Include="..\Source\cs_dropzeros.c" />
+    <ClCompile Include="..\Source\cs_dupl.c" />
+    <ClCompile Include="..\Source\cs_entry.c" />
+    <ClCompile Include="..\Source\cs_ereach.c" />
+    <ClCompile Include="..\Source\cs_etree.c" />
+    <ClCompile Include="..\Source\cs_fkeep.c" />
+    <ClCompile Include="..\Source\cs_gaxpy.c" />
+    <ClCompile Include="..\Source\cs_happly.c" />
+    <ClCompile Include="..\Source\cs_house.c" />
+    <ClCompile Include="..\Source\cs_ipvec.c" />
+    <ClCompile Include="..\Source\cs_leaf.c" />
+    <ClCompile Include="..\Source\cs_load.c" />
+    <ClCompile Include="..\Source\cs_lsolve.c" />
+    <ClCompile Include="..\Source\cs_ltsolve.c" />
+    <ClCompile Include="..\Source\cs_lu.c" />
+    <ClCompile Include="..\Source\cs_lusol.c" />
+    <ClCompile Include="..\Source\cs_malloc.c" />
+    <ClCompile Include="..\Source\cs_maxtrans.c" />
+    <ClCompile Include="..\Source\cs_multiply.c" />
+    <ClCompile Include="..\Source\cs_norm.c" />
+    <ClCompile Include="..\Source\cs_permute.c" />
+    <ClCompile Include="..\Source\cs_pinv.c" />
+    <ClCompile Include="..\Source\cs_post.c" />
+    <ClCompile Include="..\Source\cs_print.c" />
+    <ClCompile Include="..\Source\cs_pvec.c" />
+    <ClCompile Include="..\Source\cs_qr.c" />
+    <ClCompile Include="..\Source\cs_qrsol.c" />
+    <ClCompile Include="..\Source\cs_randperm.c" />
+    <ClCompile Include="..\Source\cs_reach.c" />
+    <ClCompile Include="..\Source\cs_scatter.c" />
+    <ClCompile Include="..\Source\cs_scc.c" />
+    <ClCompile Include="..\Source\cs_schol.c" />
+    <ClCompile Include="..\Source\cs_spsolve.c" />
+    <ClCompile Include="..\Source\cs_sqr.c" />
+    <ClCompile Include="..\Source\cs_symperm.c" />
+    <ClCompile Include="..\Source\cs_tdfs.c" />
+    <ClCompile Include="..\Source\cs_transpose.c" />
+    <ClCompile Include="..\Source\cs_updown.c" />
+    <ClCompile Include="..\Source\cs_usolve.c" />
+    <ClCompile Include="..\Source\cs_util.c" />
+    <ClCompile Include="..\Source\cs_utsolve.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\cs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
