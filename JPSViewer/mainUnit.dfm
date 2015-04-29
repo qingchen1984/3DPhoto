@@ -1,6 +1,6 @@
 object mainForm: TmainForm
-  Left = 195
-  Top = 128
+  Left = 966
+  Top = 262
   Width = 482
   Height = 476
   Caption = 'JPS Viewer'
@@ -11,6 +11,7 @@ object mainForm: TmainForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   PixelsPerInch = 96
@@ -19,7 +20,7 @@ object mainForm: TmainForm
     Left = 0
     Top = 0
     Width = 466
-    Height = 437
+    Height = 438
     Cursor = 1
     BorderStyle = bsFSingle
     Align = alClient
@@ -29,12 +30,12 @@ object mainForm: TmainForm
   object FImageToolkit1: TFImageToolkit
     CurrentTool = ttPane
     Image = FImage1
-    Left = 16
-    Top = 24
+    Left = 40
+    Top = 144
   end
   object ActionList1: TActionList
-    Left = 56
-    Top = 24
+    Left = 80
+    Top = 144
     object OpneImageAction: TAction
       Caption = #1054#1090#1082#1088#1099#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
       OnExecute = OpneImageActionExecute
@@ -69,8 +70,8 @@ object mainForm: TmainForm
     end
   end
   object PopupMenu1: TPopupMenu
-    Left = 96
-    Top = 24
+    Left = 120
+    Top = 144
     object N1: TMenuItem
       Action = OpneImageAction
     end
@@ -105,8 +106,8 @@ object mainForm: TmainForm
   object OpenDialog1: TOpenDialog
     Filter = 
       'Jpeg images|*.jpeg;*.jpg|AWP images|*.awp|PNG images|*.png|TIFF ' +
-      'images|*.tif;*.tiff|BMP images|*.bmp'
-    Left = 144
-    Top = 24
+      'images|*.tif;*.tiff|BMP images|*.bmp|JPS  images|*.jps'
+    Left = 168
+    Top = 144
   end
 end

@@ -1,0 +1,7 @@
+LIBRARY "JPSFILE"
+
+EXPORT
+
+createJPSFile @1
+
+

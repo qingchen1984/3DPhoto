@@ -15,6 +15,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "..\demo\demo.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vce_sparce", "..\3rdparty\CSparse\vce_sparce\vce_sparce.vcxproj", "{C9E365D0-2E21-4C73-BD30-4F0DB1E89033}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JPSFile", "..\JPSFile\JPSFile.vcxproj", "{669863C2-F047-4E75-95CA-7210BBDC9EF5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JPSFileTest", "..\JPSFileTest\JPSFileTest.vcxproj", "{67C722C4-A9A1-4911-A11B-554D02118199}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -49,6 +53,14 @@ Global
 		{C9E365D0-2E21-4C73-BD30-4F0DB1E89033}.Debug|Win32.Build.0 = Debug|Win32
 		{C9E365D0-2E21-4C73-BD30-4F0DB1E89033}.Release|Win32.ActiveCfg = Release|Win32
 		{C9E365D0-2E21-4C73-BD30-4F0DB1E89033}.Release|Win32.Build.0 = Release|Win32
+		{669863C2-F047-4E75-95CA-7210BBDC9EF5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{669863C2-F047-4E75-95CA-7210BBDC9EF5}.Debug|Win32.Build.0 = Debug|Win32
+		{669863C2-F047-4E75-95CA-7210BBDC9EF5}.Release|Win32.ActiveCfg = Release|Win32
+		{669863C2-F047-4E75-95CA-7210BBDC9EF5}.Release|Win32.Build.0 = Release|Win32
+		{67C722C4-A9A1-4911-A11B-554D02118199}.Debug|Win32.ActiveCfg = Debug|Win32
+		{67C722C4-A9A1-4911-A11B-554D02118199}.Debug|Win32.Build.0 = Debug|Win32
+		{67C722C4-A9A1-4911-A11B-554D02118199}.Release|Win32.ActiveCfg = Release|Win32
+		{67C722C4-A9A1-4911-A11B-554D02118199}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

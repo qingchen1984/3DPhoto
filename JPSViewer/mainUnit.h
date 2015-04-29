@@ -11,6 +11,10 @@
 #include <ActnList.hpp>
 #include <Menus.hpp>
 #include <Dialogs.hpp>
+// extern "C"
+//{
+        #include "JPSFile.h"
+//}
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -50,7 +54,11 @@ __published:	// IDE-managed Components
     void __fastcall BestFitActionUpdate(TObject *Sender);
     void __fastcall AboutActionExecute(TObject *Sender);
     void __fastcall FormCreate(TObject *Sender);
+        void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
+
+        IJPSFile* m_jpsFile;
+
 public:		// User declarations
     __fastcall TmainForm(TComponent* Owner);
     void __fastcall UpdateImage();

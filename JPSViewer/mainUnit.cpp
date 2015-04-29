@@ -9,6 +9,10 @@
 #pragma package(smart_init)
 #pragma link "FImage"
 
+ //extern "C"
+//{
+       #pragma link "JPSFile.lib"
+//}
 
 #pragma resource "*.dfm"
 TmainForm *mainForm;
@@ -16,6 +20,7 @@ TmainForm *mainForm;
 __fastcall TmainForm::TmainForm(TComponent* Owner)
     : TForm(Owner)
 {
+        m_jpsFile = NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::CloseActionExecute(TObject *Sender)
@@ -28,6 +33,10 @@ void __fastcall TmainForm::OpneImageActionExecute(TObject *Sender)
     if (OpenDialog1->Execute())
     {
         FImage1->Init(OpenDialog1->FileName, NULL);
+        if (!this->m_jpsFile->LoadFromFile(OpenDialog1->FileName.c_str()))
+        {
+                ShowMessage("Cannot load file.");
+        }
         UpdateImage();
     }
 }
@@ -113,6 +122,20 @@ void __fastcall TmainForm::FormCreate(TObject *Sender)
         FImage1->Init(ParamStr(1), NULL);
         FImage1->BestFit();
     }
+
+    if (createJPSFile(&this->m_jpsFile) != S_OK)
+    {
+        ShowMessage("Cannot create engine.");
+    }
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::FormClose(TObject *Sender, TCloseAction &Action)
+{
+        if (m_jpsFile != NULL)
+                m_jpsFile->Rlease();
+
 }
 //---------------------------------------------------------------------------
 
