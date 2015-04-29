@@ -11,6 +11,7 @@
 class IImage
 {
 public:
+	virtual void __stdcall Rlease() = 0;
 //IMPORTANT!!! data lines should be aligned on byte. 
 	virtual bool __stdcall Init(int widht, int height, int bpp, int cannels, unsigned char* pixels) = 0;
 	virtual bool __stdcall Load(const char* lpFilename) = 0;

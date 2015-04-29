@@ -1,6 +1,6 @@
 object mainForm: TmainForm
-  Left = 966
-  Top = 262
+  Left = 197
+  Top = 129
   Width = 482
   Height = 476
   Caption = 'JPS Viewer'
@@ -20,7 +20,7 @@ object mainForm: TmainForm
     Left = 0
     Top = 0
     Width = 466
-    Height = 438
+    Height = 437
     Cursor = 1
     BorderStyle = bsFSingle
     Align = alClient
@@ -68,6 +68,27 @@ object mainForm: TmainForm
       Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'...'
       OnExecute = AboutActionExecute
     end
+    object ViewTAnglfAction: TAction
+      Caption = #1048#1089#1093#1086#1076#1085#1099#1081' '#1072#1085#1072#1075#1083#1080#1092' '
+    end
+    object ViewOAnglfAction: TAction
+      Caption = #1054#1087#1090#1080#1084#1080#1079#1080#1088#1086#1074#1072#1085#1085#1099#1081' '#1072#1085#1072#1075#1083#1080#1092
+    end
+    object ViewGAnglfAction: TAction
+      Caption = #1055#1086#1083#1091#1090#1086#1085#1086#1074#1099#1081' '#1072#1085#1072#1075#1083#1080#1092
+    end
+    object ViewCAnglfAction: TAction
+      Caption = #1062#1074#1077#1090#1085#1086#1081' '#1072#1085#1072#1075#1083#1080#1092
+    end
+    object ViewSourceAction: TAction
+      Caption = #1048#1089#1093#1086#1076#1085#1086#1077' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077
+    end
+    object ViewLeftAction: TAction
+      Caption = #1044#1083#1103' '#1083#1077#1074#1086#1075#1086' '#1075#1083#1072#1079#1072
+    end
+    object ViewRightAction: TAction
+      Caption = #1044#1083#1103' '#1087#1088#1072#1074#1086#1075#1086' '#1075#1083#1072#1079#1072
+    end
   end
   object PopupMenu1: TPopupMenu
     Left = 120
@@ -92,6 +113,33 @@ object mainForm: TmainForm
     end
     object N9: TMenuItem
       Action = BestFitAction
+    end
+    object N11: TMenuItem
+      Caption = '-'
+    end
+    object N12: TMenuItem
+      Action = ViewSourceAction
+    end
+    object N13: TMenuItem
+      Action = ViewLeftAction
+    end
+    object N14: TMenuItem
+      Action = ViewRightAction
+    end
+    object N15: TMenuItem
+      Caption = '-'
+    end
+    object N16: TMenuItem
+      Action = ViewTAnglfAction
+    end
+    object N17: TMenuItem
+      Action = ViewOAnglfAction
+    end
+    object N18: TMenuItem
+      Action = ViewGAnglfAction
+    end
+    object N19: TMenuItem
+      Action = ViewCAnglfAction
     end
     object N2: TMenuItem
       Caption = '-'

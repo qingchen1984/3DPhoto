@@ -182,7 +182,7 @@ static int _Make3DAnaglyph(IplImage* pSrc, IplImage* pDst,int options)
 	return res;
 }
 // собирает мозаику из изображений для левого и правого глаза
-static int _Make3DTile(IplImage* pSrc, IplImage* pDst)
+int _Make3DTile(IplImage* pSrc, IplImage* pDst)
 {
 	int res = NOERROR;
 	CvSize s; s.width = pSrc->width;s.height = pSrc->height;
@@ -446,7 +446,7 @@ int Make3DAnaglyph(const char* lpSrcName, const char* lpDstName,int options)
 	}
 	else if (options == 5)
 	{	
-		//todo: сщхранение мозаики
+		//todo: сoхранение мозаики
 		s.width = 2*pSrc->width; s.height = pSrc->height;
 		pDst = cvCreateImage(s, pSrc->depth, pSrc->nChannels);
 		if (pDst == NULL)

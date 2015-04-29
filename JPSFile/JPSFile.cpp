@@ -19,9 +19,11 @@ private:
 public:
 
 	CCvImage();
+	CCvImage(CCvImage& image);
 	~CCvImage();
-
+	virtual void __stdcall Rlease();
 	virtual bool __stdcall Init(int widht, int height, int bpp,  int cannels, unsigned char* pixels);
+	virtual bool __stdcall Init(IplImage* image);
 	virtual bool __stdcall Load(const char* lpFilename);
 	virtual bool __stdcall Save(const char* lpFilename);
 	virtual bool __stdcall IsEmpty();
@@ -30,7 +32,8 @@ public:
 	virtual int  __stdcall Bpp();
 	virtual int  __stdcall Channels();
 	virtual int  __stdcall WidthStep();
-	virtual unsigned char* __stdcall Pixels();	
+	virtual unsigned char* __stdcall Pixels();
+	IplImage* GetIplImage();
 };
 
 
@@ -38,9 +41,24 @@ CCvImage::CCvImage()
 {
 	this->m_image = NULL;
 }
+CCvImage::CCvImage(CCvImage& image)
+{
+	if (image.m_image != NULL)
+	{
+		this->m_image = cvCloneImage(image.m_image);
+	}
+	else
+		this->m_image = NULL;
+}
+
 CCvImage::~CCvImage()
 {
 	Clear();
+}
+
+void __stdcall CCvImage::Rlease()
+{
+	delete this;
 }
 
 void CCvImage::Clear()
@@ -50,7 +68,10 @@ void CCvImage::Clear()
 	this->m_image = NULL;
 }
 
-
+//предполагаем, что pixels содержит непрерывный набор строк, без выравнивания. 
+//в случае, когда строки выровнены на 4 байта или как-то иначе их необходимо 
+//предварительно скопировать в специальный буфер без выравнивания, котороый и передавать в 
+//эту функцию. 
 bool CCvImage::Init(int width, int height, int bpp,  int cannels, unsigned char* pixels)
 {
 	this->Clear();
@@ -61,12 +82,29 @@ bool CCvImage::Init(int width, int height, int bpp,  int cannels, unsigned char*
 	m_image = cvCreateImage(s,bpp, cannels );
 	if (m_image != NULL)
 	{
-		// copy data
-		
+		//todo: copy data
+		unsigned char* dst = (unsigned char*)m_image->imageData;
+		unsigned char* p   = pixels;
+		int step = cannels*width*sizeof(unsigned char);
+		for (int y = 0; y < height; y++)
+		{
+			memcpy(dst, p, step);
+			p   += step;
+			dst += m_image->widthStep;
+		}
 		return true;
 	}
 	else
 		return false;
+}
+
+bool __stdcall CCvImage::Init(IplImage* image)
+{
+	this->Clear();
+	if (image == NULL)
+		return false;
+	this->m_image = cvCloneImage(image);
+	return this->m_image != NULL;
 }
 
 bool CCvImage::Load(const char* lpFilename)
@@ -80,7 +118,7 @@ bool CCvImage::Save(const char* lpFilename)
 {
 	if (IsEmpty())
 		return false;
-	return cvSaveImage(lpFilename, this->m_image) == 0;
+	return cvSaveImage(lpFilename, this->m_image);
 }
 
 bool CCvImage::IsEmpty()
@@ -124,6 +162,12 @@ unsigned char* CCvImage::Pixels()
 	return (unsigned char*)this->m_image->imageData;
 }
 
+IplImage* CCvImage::GetIplImage()
+{
+	return this->m_image;
+}
+
+
 
 class CJPSFile : public IJPSFile
 {
@@ -152,11 +196,19 @@ public:
 
 CJPSFile::CJPSFile() 
 {
-	m_image = NULL;
+	m_image = new CCvImage();
+	m_lep = new CCvImage();
+	m_rep = new CCvImage();
 }
 
 CJPSFile::~CJPSFile()
 {
+	if (this->m_image != NULL)
+		delete this->m_image;
+	if (this->m_lep != NULL)
+		delete this->m_lep;
+	if (this->m_rep != NULL)
+		delete this->m_rep;
 
 }
 
@@ -170,28 +222,105 @@ bool CJPSFile::LoadFromFile(LPCSTR lpFileName)
 		return false;
 
 	IplImage* img = NULL;
+	IplImage* imgLep = NULL;
+	IplImage* imgRep = NULL;
+
 	img = cvLoadImage(lpFileName);
 	if (img != NULL ) 
 	{
+		bool result = false;
 		__try
 		{
-			
+			int width  = img->width / 2;
+			int height = img->height;
+
+			CvSize size;
+			size.width	= width;
+			size.height = height;
+
+			imgLep = cvCreateImage(size, img->depth,img->nChannels);
+			imgRep = cvCreateImage(size, img->depth,img->nChannels);
+
+			if (imgLep == NULL || imgRep == NULL)
+				throw 0;
+
+			// copy data
+			unsigned char* src = (unsigned char*)img->imageData;
+			unsigned char* lep = (unsigned char*)imgLep->imageData;
+			unsigned char* rep = (unsigned char*)imgRep->imageData;
+
+			for (int y = 0; y < height; y++)
+			{
+				memcpy(rep, src, width*img->nChannels);
+				src += width*img->nChannels;
+				memcpy(lep, src, width*img->nChannels);
+				src += (img->widthStep - width*img->nChannels);
+				rep += imgRep->widthStep;
+				lep += imgLep->widthStep;
+			}
+
+			this->m_image->Init(img);
+			this->m_lep->Init(imgLep);
+			this->m_rep->Init(imgRep);
+
+			result = true;
 		}
 		__finally
 		{
 			cvReleaseImage(&img);
+			cvReleaseImage(&imgLep);
+			cvReleaseImage(&imgRep);
 		}
-		return true;
+		return result;
 	}
 	return false;
 }
 bool CJPSFile::SaveToFile(const char* lpFileName)
 {
-	return false;
+	if (lpFileName== NULL)
+		return false;
+	if (this->m_image->IsEmpty())
+		return false;
+	bool result = this->m_image->Save("__tmp.jpg");
+	if (result)
+	{
+		rename("__tmp.jpg", lpFileName);
+		remove("__tmp.jpg");	
+	}
+	return result;
 }
+
 bool CJPSFile::Init(IImage* src)
 {
-	return false;
+	if (src == NULL)
+		return false;
+	
+	IplImage* dst = NULL;
+	IplImage* isrc = ((CCvImage*)src)->GetIplImage();
+
+	if (isrc == NULL)
+		return false;
+
+	CvSize size;
+	size.height = isrc->height;
+	size.width  = isrc->width*2;
+
+	dst = cvCreateImage(size, isrc->depth, isrc->nChannels);
+	if (dst == NULL)
+		return false;
+
+	int result = _Make3DTile(isrc, dst);
+
+	if (result != NOERROR)
+	{
+		cvReleaseImage(&dst);
+		return false;
+	}
+
+	this->m_image->Init(dst);
+	cvReleaseImage(&dst);
+
+	return true;
 }
 
 void CJPSFile::Rlease()
@@ -202,31 +331,99 @@ void CJPSFile::Rlease()
 
 IImage*  CJPSFile::GetLep()
 {
-	return NULL;
+	return new CCvImage(*this->m_lep);
 }
 IImage*  CJPSFile::GetRep()
 {
-	return NULL;
+	return new CCvImage(* this->m_rep);
 }
 IImage*  CJPSFile::GetJPS()
 {
-	return NULL;
+	return new CCvImage(*this->m_image);
 }
 IImage*  CJPSFile::GetTrueAnaglyph()
 {
-	return NULL;
+	IplImage* rep = this->m_rep->GetIplImage();
+	IplImage* lep = this->m_lep->GetIplImage();
+
+	if (rep == NULL || lep == NULL)
+		return NULL;
+	CvSize size;
+	size.height = lep->height;
+	size.width  = lep->width;
+
+	IplImage* result = NULL;
+
+	result = cvCreateImage(size, lep->depth, lep->nChannels);
+	MakeAnaglyph(lep,rep,result, TrueAnaglyph);
+
+	CCvImage* anaglyph = new CCvImage();
+	anaglyph->Init(result);
+
+	return anaglyph;
 }
 IImage*  CJPSFile::GetGrayAnaglyph()
 {
-	return NULL;
+	IplImage* rep = this->m_rep->GetIplImage();
+	IplImage* lep = this->m_lep->GetIplImage();
+
+	if (rep == NULL || lep == NULL)
+		return NULL;
+	CvSize size;
+	size.height = lep->height;
+	size.width  = lep->width;
+
+	IplImage* result = NULL;
+
+	result = cvCreateImage(size, lep->depth, lep->nChannels);
+	MakeAnaglyph(lep,rep,result, GrayAnaglyph);
+
+	CCvImage* anaglyph = new CCvImage();
+	anaglyph->Init(result);
+
+	return anaglyph;
 }
 IImage*  CJPSFile::GetColorAnaglyph()
 {
-	return NULL;
+	IplImage* rep = this->m_rep->GetIplImage();
+	IplImage* lep = this->m_lep->GetIplImage();
+
+	if (rep == NULL || lep == NULL)
+		return NULL;
+	CvSize size;
+	size.height = lep->height;
+	size.width  = lep->width;
+
+	IplImage* result = NULL;
+
+	result = cvCreateImage(size, lep->depth, lep->nChannels);
+	MakeAnaglyph(lep,rep,result, ColorAnaglyph);
+
+	CCvImage* anaglyph = new CCvImage();
+	anaglyph->Init(result);
+
+	return anaglyph;
 }
 IImage*  CJPSFile::GetOptimizedAnglyph()
 {
-	return NULL;
+	IplImage* rep = this->m_rep->GetIplImage();
+	IplImage* lep = this->m_lep->GetIplImage();
+
+	if (rep == NULL || lep == NULL)
+		return NULL;
+	CvSize size;
+	size.height = lep->height;
+	size.width  = lep->width;
+
+	IplImage* result = NULL;
+
+	result = cvCreateImage(size, lep->depth, lep->nChannels);
+	MakeAnaglyph(lep,rep,result, OptimizedAnaglyph);
+
+	CCvImage* anaglyph = new CCvImage();
+	anaglyph->Init(result);
+
+	return anaglyph;
 }
 
 

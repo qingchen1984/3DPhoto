@@ -81,4 +81,9 @@ bool CheckFileNameExt(const char* lpExt, const char* lpFileName);
 */
 bool AcceptFileName(const char* lpFileName, int options, bool isSrc);
 
+/*
+// получение jps изображения
+*/
+int _Make3DTile(IplImage* pSrc, IplImage* pDst);
+
 #endif//__3danaglyph_h_

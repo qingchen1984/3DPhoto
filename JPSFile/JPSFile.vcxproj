@@ -100,6 +100,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3rdparty\CSparse\vce_sparce\vce_sparce.vcxproj">
+      <Project>{c9e365d0-2e21-4c73-bd30-4f0db1e89033}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\vsproj\3DAnaglyph.vcxproj">
       <Project>{ac52e51f-520f-4701-b2a2-343e923920e2}</Project>
     </ProjectReference>
