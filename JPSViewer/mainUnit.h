@@ -71,9 +71,24 @@ __published:	// IDE-managed Components
     void __fastcall AboutActionExecute(TObject *Sender);
     void __fastcall FormCreate(TObject *Sender);
         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+    void __fastcall ViewTAnglfActionExecute(TObject *Sender);
+    void __fastcall ViewTAnglfActionUpdate(TObject *Sender);
+    void __fastcall ViewSourceActionExecute(TObject *Sender);
+    void __fastcall ViewSourceActionUpdate(TObject *Sender);
+    void __fastcall ViewLeftActionUpdate(TObject *Sender);
+    void __fastcall ViewLeftActionExecute(TObject *Sender);
+    void __fastcall ViewRightActionExecute(TObject *Sender);
+    void __fastcall ViewRightActionUpdate(TObject *Sender);
+    void __fastcall ViewOAnglfActionExecute(TObject *Sender);
+    void __fastcall ViewOAnglfActionUpdate(TObject *Sender);
+    void __fastcall ViewGAnglfActionExecute(TObject *Sender);
+    void __fastcall ViewGAnglfActionUpdate(TObject *Sender);
+    void __fastcall ViewCAnglfActionExecute(TObject *Sender);
+    void __fastcall ViewCAnglfActionUpdate(TObject *Sender);
 private:	// User declarations
 
         IJPSFile* m_jpsFile;
+        awpImage* GetAwpImage(IImage* image);
 
 public:		// User declarations
     __fastcall TmainForm(TComponent* Owner);

@@ -31,6 +31,7 @@ public:
 	virtual bool __stdcall LoadFromFile(LPCSTR lpFileName) = 0;
 	virtual bool __stdcall SaveToFile(const char* lpFileName) = 0;
 	virtual bool __stdcall Init(IImage* src) = 0;
+	virtual bool __stdcall InitFromFile(const char* lpFileName) = 0;
 	virtual IImage*  __stdcall GetLep() = 0;
 	virtual IImage*  __stdcall GetRep() = 0;
 	virtual IImage*  __stdcall GetJPS() = 0;
@@ -38,6 +39,7 @@ public:
 	virtual IImage*  __stdcall GetGrayAnaglyph() = 0;
 	virtual IImage*  __stdcall GetColorAnaglyph()= 0;
 	virtual IImage*  __stdcall GetOptimizedAnglyph() = 0;
+	virtual bool     __stdcall IsEmpty() = 0;
 };
 
 

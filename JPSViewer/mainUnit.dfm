@@ -46,11 +46,13 @@ object mainForm: TmainForm
     end
     object ModePaneAction: TAction
       Caption = #1056#1077#1078#1080#1084' '#1087#1088#1086#1089#1084#1086#1090#1088#1072
+      Visible = False
       OnExecute = ModePaneActionExecute
       OnUpdate = ModePaneActionUpdate
     end
     object ModeSelRectAction: TAction
       Caption = #1042#1099#1073#1088#1072#1090#1100' '#1087#1088#1103#1084#1086#1091#1075#1086#1083#1100#1085#1080#1082
+      Visible = False
       OnExecute = ModeSelRectActionExecute
       OnUpdate = ModeSelRectActionUpdate
     end
@@ -70,24 +72,38 @@ object mainForm: TmainForm
     end
     object ViewTAnglfAction: TAction
       Caption = #1048#1089#1093#1086#1076#1085#1099#1081' '#1072#1085#1072#1075#1083#1080#1092' '
+      OnExecute = ViewTAnglfActionExecute
+      OnUpdate = ViewTAnglfActionUpdate
     end
     object ViewOAnglfAction: TAction
       Caption = #1054#1087#1090#1080#1084#1080#1079#1080#1088#1086#1074#1072#1085#1085#1099#1081' '#1072#1085#1072#1075#1083#1080#1092
+      OnExecute = ViewOAnglfActionExecute
+      OnUpdate = ViewOAnglfActionUpdate
     end
     object ViewGAnglfAction: TAction
       Caption = #1055#1086#1083#1091#1090#1086#1085#1086#1074#1099#1081' '#1072#1085#1072#1075#1083#1080#1092
+      OnExecute = ViewGAnglfActionExecute
+      OnUpdate = ViewGAnglfActionUpdate
     end
     object ViewCAnglfAction: TAction
       Caption = #1062#1074#1077#1090#1085#1086#1081' '#1072#1085#1072#1075#1083#1080#1092
+      OnExecute = ViewCAnglfActionExecute
+      OnUpdate = ViewCAnglfActionUpdate
     end
     object ViewSourceAction: TAction
       Caption = #1048#1089#1093#1086#1076#1085#1086#1077' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077
+      OnExecute = ViewSourceActionExecute
+      OnUpdate = ViewSourceActionUpdate
     end
     object ViewLeftAction: TAction
       Caption = #1044#1083#1103' '#1083#1077#1074#1086#1075#1086' '#1075#1083#1072#1079#1072
+      OnExecute = ViewLeftActionExecute
+      OnUpdate = ViewLeftActionUpdate
     end
     object ViewRightAction: TAction
       Caption = #1044#1083#1103' '#1087#1088#1072#1074#1086#1075#1086' '#1075#1083#1072#1079#1072
+      OnExecute = ViewRightActionExecute
+      OnUpdate = ViewRightActionUpdate
     end
   end
   object PopupMenu1: TPopupMenu

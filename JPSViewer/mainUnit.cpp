@@ -32,14 +32,66 @@ void __fastcall TmainForm::OpneImageActionExecute(TObject *Sender)
 {
     if (OpenDialog1->Execute())
     {
-        FImage1->Init(OpenDialog1->FileName, NULL);
-        if (!this->m_jpsFile->LoadFromFile(OpenDialog1->FileName.c_str()))
+        AnsiString strExt = ExtractFileExt(OpenDialog1->FileName);
+
+        if (strExt == ".jps")
         {
-                ShowMessage("Cannot load file.");
+            if (!this->m_jpsFile->LoadFromFile(OpenDialog1->FileName.c_str()))
+            {
+                ShowMessage("Не могу открыть файл.");
+                return;
+            }
         }
+        else
+        {
+           if (!this->m_jpsFile->InitFromFile(OpenDialog1->FileName.c_str()))
+            {
+                ShowMessage("Не могу открыть файл.");
+                return;
+            }
+        }
+
+        IImage* img = this->m_jpsFile->GetJPS();
+        awpImage* awp = GetAwpImage(img);
+/*
+        awpCreateImage(&awp, img->Width(), img->Height(), 3, AWP_BYTE);
+
+        unsigned char* p = img->Pixels();
+        AWPBYTE* b = (AWPBYTE*)awp->pPixels;
+        int size = awp->sSizeX*awp->bChannels;
+        for (int i = 0; i < awp->sSizeY; i++)
+        {
+            memcpy(b, p, size);
+            b+= size;
+            p+= img->WidthStep();
+        }
+*/
+        FImage1->Bitmap->SetAWPImage(awp);
+        awpReleaseImage(&awp);
+        img->Rlease();
+
         UpdateImage();
     }
 }
+
+awpImage* TmainForm::GetAwpImage(IImage* img)
+{
+    awpImage* awp = NULL;
+
+    awpCreateImage(&awp, img->Width(), img->Height(), 3, AWP_BYTE);
+
+    unsigned char* p = img->Pixels();
+    AWPBYTE* b = (AWPBYTE*)awp->pPixels;
+    int size = awp->sSizeX*awp->bChannels;
+    for (int i = 0; i < awp->sSizeY; i++)
+    {
+        memcpy(b, p, size);
+        b+= size;
+        p+= img->WidthStep();
+    }
+    return awp;
+}
+
 void __fastcall TmainForm::UpdateImage()
 {
         // установка размеров изображения.
@@ -136,6 +188,128 @@ void __fastcall TmainForm::FormClose(TObject *Sender, TCloseAction &Action)
         if (m_jpsFile != NULL)
                 m_jpsFile->Rlease();
 
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewTAnglfActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetTrueAnaglyph();
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewTAnglfActionUpdate(TObject *Sender)
+{
+    ViewTAnglfAction->Enabled = !this->m_jpsFile->IsEmpty();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewSourceActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetJPS();
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewSourceActionUpdate(TObject *Sender)
+{
+    ViewSourceAction->Enabled = !this->m_jpsFile->IsEmpty();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TmainForm::ViewLeftActionUpdate(TObject *Sender)
+{
+    ViewLeftAction->Enabled = !this->m_jpsFile->IsEmpty();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewLeftActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetLep();
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewRightActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetRep();
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewRightActionUpdate(TObject *Sender)
+{
+    ViewRightAction->Enabled = !this->m_jpsFile->IsEmpty();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TmainForm::ViewOAnglfActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetOptimizedAnglyph() ;
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewOAnglfActionUpdate(TObject *Sender)
+{
+    ViewOAnglfAction->Enabled = !this->m_jpsFile->IsEmpty();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TmainForm::ViewGAnglfActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetGrayAnaglyph();
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewGAnglfActionUpdate(TObject *Sender)
+{
+    ViewGAnglfAction->Enabled = !this->m_jpsFile->IsEmpty();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewCAnglfActionExecute(TObject *Sender)
+{
+    IImage* img = this->m_jpsFile->GetColorAnaglyph();
+    awpImage* awp = GetAwpImage(img);
+    FImage1->Bitmap->SetAWPImage(awp);
+    awpReleaseImage(&awp);
+    img->Rlease();
+    UpdateImage();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::ViewCAnglfActionUpdate(TObject *Sender)
+{
+    ViewCAnglfAction->Enabled = !this->m_jpsFile->IsEmpty();
 }
 //---------------------------------------------------------------------------
 

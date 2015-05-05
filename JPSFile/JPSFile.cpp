@@ -183,6 +183,7 @@ public:
 	virtual bool __stdcall LoadFromFile(LPCSTR lpFileName);
 	virtual bool __stdcall SaveToFile(const char* lpFileName);
 	virtual bool __stdcall Init(IImage* src);
+	virtual bool __stdcall InitFromFile(const char* lpFileName);
 	virtual void __stdcall Rlease();
 	virtual IImage*  __stdcall GetLep();
 	virtual IImage*  __stdcall GetRep();
@@ -191,6 +192,7 @@ public:
 	virtual IImage*  __stdcall GetGrayAnaglyph();
 	virtual IImage*  __stdcall GetColorAnaglyph();
 	virtual IImage*  __stdcall GetOptimizedAnglyph();
+	virtual bool     __stdcall IsEmpty();
 };
 
 
@@ -210,6 +212,11 @@ CJPSFile::~CJPSFile()
 	if (this->m_rep != NULL)
 		delete this->m_rep;
 
+}
+
+bool   CJPSFile::IsEmpty()
+{
+	return this->m_image->IsEmpty();
 }
 
 bool CJPSFile::LoadFromFile(LPCSTR lpFileName)
@@ -317,11 +324,82 @@ bool CJPSFile::Init(IImage* src)
 		return false;
 	}
 
-	this->m_image->Init(dst);
-	cvReleaseImage(&dst);
+	IplImage* imgLep = NULL;
+	IplImage* imgRep = NULL;
 
-	return true;
+		bool res = false;
+		__try
+		{
+			int width  = dst->width / 2;
+			int height = dst->height;
+
+			CvSize size;
+			size.width	= width;
+			size.height = height;
+
+			imgLep = cvCreateImage(size, dst->depth,dst->nChannels);
+			imgRep = cvCreateImage(size, dst->depth,dst->nChannels);
+
+			if (imgLep == NULL || imgRep == NULL)
+				throw 0;
+
+			// copy data
+			unsigned char* src = (unsigned char*)dst->imageData;
+			unsigned char* lep = (unsigned char*)imgLep->imageData;
+			unsigned char* rep = (unsigned char*)imgRep->imageData;
+
+			for (int y = 0; y < height; y++)
+			{
+				memcpy(rep, src, width*dst->nChannels);
+				src += width*dst->nChannels;
+				memcpy(lep, src, width*dst->nChannels);
+				src += (dst->widthStep - width*dst->nChannels);
+				rep += imgRep->widthStep;
+				lep += imgLep->widthStep;
+			}
+
+			this->m_image->Init(dst);
+			this->m_lep->Init(imgLep);
+			this->m_rep->Init(imgRep);
+
+			res = true;
+		}
+		__finally
+		{
+			cvReleaseImage(&dst);
+			cvReleaseImage(&imgLep);
+			cvReleaseImage(&imgRep);
+		}
+
+
+
+	//this->m_image->Init(dst);
+	//cvReleaseImage(&dst);
+
+	return res;
 }
+
+bool CJPSFile::InitFromFile(const char* lpFileName)
+{
+	if (lpFileName == NULL)
+		return false;
+	
+	IplImage* img = NULL;
+	img = cvLoadImage(lpFileName);
+	if (img == NULL)
+		return false;
+
+	CCvImage cvImage;// = new CCvImage();
+	cvImage.Init(img);
+
+	bool res = this->Init(&cvImage);
+
+	cvReleaseImage(&img);
+	return res;
+
+
+}
+
 
 void CJPSFile::Rlease()
 {
